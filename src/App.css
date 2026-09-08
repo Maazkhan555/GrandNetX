@@ -1,0 +1,90 @@
+/* Root container - dark cyberpunk vibe */
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #0a0a0f; /* Very dark background */
+  color: #f0f0f0; /* Light neon-like text */
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Logo styles with neon glow */
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms, transform 300ms, text-shadow 300ms;
+  filter: brightness(1);
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #ff00ffaa)
+          drop-shadow(0 0 4em #ff00ffaa)
+          drop-shadow(0 0 6em #ff00ff99);
+  transform: scale(1.1);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa)
+          drop-shadow(0 0 4em #61dafb88)
+          drop-shadow(0 0 6em #61dafb55);
+}
+
+/* Spinning logo animation */
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+/* Card styling - neon borders */
+.card {
+  padding: 2em;
+  background-color: #121018; /* Dark card background */
+  border-radius: 0.75em;
+  border: 2px solid #ff00ffaa; /* Neon border */
+  box-shadow: 0 0 2em #ff00ffaa, 0 0 4em #ff00ffaa, 0 0 6em #ff00ff88;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 0 3em #ff00ffaa, 0 0 6em #ff00ff88, 0 0 10em #ff00ff55;
+}
+
+/* Links with neon glow */
+.read-the-docs {
+  color: #61dafb; /* Cyan neon */
+  text-decoration: underline;
+  text-shadow: 0 0 0.3em #61dafbaa, 0 0 0.6em #61dafb77;
+  transition: text-shadow 0.3s;
+}
+
+.read-the-docs:hover {
+  text-shadow: 0 0 0.5em #61dafbff, 0 0 1em #24768d99, 0 0 2em #61dafb77;
+}
+
+/* Optional: subtle animated background glow */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(circle at 20% 30%, #ff00ff33, transparent 60%),
+              radial-gradient(circle at 80% 70%, #00ffff33, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  animation: bg-glow 20s infinite alternate;
+}
+
+@keyframes bg-glow {
+  0% { transform: scale(1) translate(0,0); }
+  50% { transform: scale(1.05) translate(5px,-5px); }
+  100% { transform: scale(1) translate(0,0); }
+}
