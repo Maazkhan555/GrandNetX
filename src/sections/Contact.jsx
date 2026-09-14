@@ -7,8 +7,8 @@ const Contact = () => {
     <section id="contact" className="flex-center md:p-0 px-5 relative">
       <div className="w-full h-full container md:my-40 my-20">
         <TitleHeader
-          title="Contact Me"
-          number="05"
+          title="Contact Us"
+          number="04"
           text="Let's build something great together"
         />
         <div className="mt-20">

@@ -13,9 +13,9 @@ const Projects = () => {
       <div className="w-full md:my-40 my-20 relative z-10">
         <div className="container mx-auto md:p-0 px-5">
           <TitleHeader
-            title="My PROJECTS"
+            title="Our PROJECTS"
             number="03"
-            text="Check my recent projects below"
+            text="Explore what GrandNetX has built"
           />
         </div>
         <div className="md:mt-20 mt-10">

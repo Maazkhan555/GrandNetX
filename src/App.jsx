@@ -1,40 +1,41 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NotFound from "./components/NotFound";
-import CustomCursor from "./components/CustomCursor";
-import ScrollReveal from "./components/ScrollReveal";
 import {
   About,
   Contact,
-  Experience,
+  FAQ,
   Footer,
+  Founders,
   Hero,
   Loader,
   NavBar,
+  Process,
+  Services,
   Sidebar,
   Stats,
   TechStack,
+  Testimonials,
   Projects,
+  WhyUs,
 } from "./sections";
 
 const MainContent = () => (
   <>
-    <CustomCursor />
     <NavBar />
     <Sidebar />
     <Loader />
     <Hero />
-    <div className="section-divider" />
-    <ScrollReveal><About /></ScrollReveal>
-    <div className="section-divider" />
-    <ScrollReveal delay={100}><TechStack /></ScrollReveal>
-    <div className="section-divider" />
-    <ScrollReveal delay={100}><Stats /></ScrollReveal>
-    <div className="section-divider" />
-    <ScrollReveal delay={100}><Projects /></ScrollReveal>
-    <div className="section-divider" />
-    <ScrollReveal delay={100}><Experience /></ScrollReveal>
-    <div className="section-divider" />
-    <ScrollReveal delay={100}><Contact /></ScrollReveal>
+    <About />
+    <Stats />
+    <Founders />
+    <Services />
+    <WhyUs />
+    <Process />
+    <TechStack />
+    <Projects />
+    <Testimonials />
+    <FAQ />
+    <Contact />
     <Footer />
   </>
 );
@@ -42,7 +43,7 @@ const MainContent = () => (
 const App = () => {
   return (
     <Router>
-      <div className="bg-black-100">
+      <div className="bg-black">
         <Routes>
           <Route path="/" element={<MainContent />} />
           <Route path="*" element={<NotFound />} />

@@ -16,21 +16,20 @@ const Stats = () => {
           <div className="relative">
             <div className="glow-card rounded-3xl overflow-hidden h-[500px]">
               <img
-                src="/images/ChatGPT Image Aug 20, 2026, 07_48_05 AM.png"
-                alt="Maaz Khan"
+                src="/images/ChatGPT Image Aug 14, 2026, 03_14_49 PM.png"
+                alt="GrandNetX Team"
                 className="w-full h-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#05030f]/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6">
-                <p className="text-white/40 text-xs tracking-widest uppercase mb-1">Full Stack Developer</p>
-                <h2 className="gradient-title text-3xl font-bold">Maaz Khan</h2>
+                <p className="text-white/40 text-xs tracking-widest uppercase mb-1">Full-Service IT Company</p>
+                <h2 className="gradient-title text-3xl font-bold">GrandNetX</h2>
               </div>
             </div>
-            {/* floating badge */}
-            <div className="absolute -top-4 -right-4 bg-[#0e0c18] border border-[#4f8aff]/25 rounded-2xl px-5 py-3 hidden md:block">
+            <div className="absolute -top-4 -right-4 bg-black border border-[#4f8aff]/25 rounded-2xl px-5 py-3 hidden md:block">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 rounded-full bg-[#00e5ff] animate-pulse" />
-                <span className="text-white/70 text-sm">Open to work</span>
+                <span className="text-white/70 text-sm">Open for Projects</span>
               </div>
             </div>
           </div>
@@ -44,8 +43,8 @@ const Stats = () => {
                 <span className="gradient-title-accent">real products</span>
               </h2>
               <p className="text-white/40 mt-4 md:text-base text-sm leading-relaxed max-w-md">
-                From concept to deployment — I build fast, scalable, and visually stunning
-                applications that solve real problems.
+                From concept to deployment — GrandNetX builds fast, scalable, and visually stunning
+                digital solutions that drive real business growth.
               </p>
             </div>
 
@@ -69,7 +68,7 @@ const Stats = () => {
                 href="#contact"
                 className="px-6 py-3 rounded-xl bg-[#00e5ff]/10 border border-[#00e5ff]/25 hover:bg-[#00e5ff]/20 hover:border-[#00e5ff]/50 text-white/80 hover:text-white text-sm transition-all duration-300"
               >
-                Hire Me →
+                Contact Us →
               </a>
             </div>
           </div>
