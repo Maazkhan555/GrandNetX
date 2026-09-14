@@ -10,7 +10,7 @@ const founders = [
   {
     name: "Syed Waleed",
     role: "CTO & Co-Founder",
-    img: "/images/ChatGPT Image Sep 14, 2026, 06_30_49 AM.png",
+    img: "/images/WhatsApp Image 2026-09-14 at 7.11.30 AM.jpeg",
   },
   {
     name: "Nabeel khan",
