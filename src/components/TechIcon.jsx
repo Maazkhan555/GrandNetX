@@ -1,7 +1,7 @@
 const TechIcon = ({ icon }) => {
   return (
-    <div className="flex-none md:w-32 md:h-32 w-20 h-20 bg-black-300 flex-center gradient-border marquee-item hover:-translate-y-3 transition-all duration-700">
-      <img src={icon.image} alt={icon.name} className="md:size-16 size-10" />
+    <div className="flex-none md:w-28 md:h-28 w-20 h-20 bg-white border border-black/6 rounded-2xl flex items-center justify-center marquee-item hover:-translate-y-2 transition-all duration-500 shadow-sm hover:shadow-md hover:border-black/12">
+      <img src={icon.image} alt={icon.name} className="md:size-12 size-9 opacity-70 hover:opacity-100 transition-opacity" />
     </div>
   );
 };

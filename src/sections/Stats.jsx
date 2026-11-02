@@ -1,48 +1,103 @@
+import { useEffect, useRef, useState } from "react";
 import GradientSpheres from "../components/GradientSpheres";
 import { statsList } from "../constants";
 
-const Stats = () => {
+const useCountUp = (target, duration = 2000, start = false) => {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    const num = parseInt(target.replace(/\D/g, "")) || 0;
+    if (num === 0) { setCount(target); return; }
+    const step = Math.ceil(num / (duration / 16));
+    let current = 0;
+    const timer = setInterval(() => {
+      current = Math.min(current + step, num);
+      setCount(current);
+      if (current >= num) clearInterval(timer);
+    }, 16);
+    return () => clearInterval(timer);
+  }, [start, target, duration]);
+  return count;
+};
+
+const StatCard = ({ stat, index, visible }) => {
+  const suffix = stat.number.replace(/[0-9]/g, "");
+  const count = useCountUp(stat.number, 1800 + index * 200, visible);
   return (
-    <section className="w-full relative md:p-0 px-5 overflow-hidden">
+    <div className="stat-card rounded-2xl p-6" style={{ transitionDelay: `${index * 0.1}s` }}>
+      <h3 className="stat-number text-black md:text-5xl text-4xl font-bold">
+        {typeof count === "number" ? count + suffix : stat.number}
+      </h3>
+      <p className="stat-label text-black/35 text-sm mt-2 font-medium">{stat.label}</p>
+    </div>
+  );
+};
+
+const Stats = () => {
+  const sectionRef = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setVisible(true); },
+      { threshold: 0.3 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="w-full relative md:px-0 px-5 overflow-hidden bg-[#fafafa] py-24 md:py-32" ref={sectionRef}>
       <GradientSpheres
         sphere1Class="stats-gradient-sphere stats-sphere-1"
         sphere2Class="stats-gradient-sphere stats-sphere-2"
       />
 
-      <div className="container mx-auto md:my-32 my-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+      <div className="container mx-auto relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
 
           {/* Left — image */}
-          <div className="relative">
-            <div className="glow-card rounded-3xl overflow-hidden h-[500px]">
+          <div className="relative reveal-left">
+            <div className="rounded-3xl overflow-hidden h-[520px] border border-black/6 shadow-2xl">
               <img
                 src="/images/ChatGPT Image Aug 14, 2026, 03_14_49 PM.png"
                 alt="GrandNetX Team"
                 className="w-full h-full object-cover object-top"
+                style={{ filter: "grayscale(20%)" }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-              <div className="absolute bottom-6 left-6">
-                <p className="text-white/40 text-xs tracking-widest uppercase mb-1">Full-Service IT Company</p>
-                <h2 className="gradient-title text-3xl font-bold">GrandNetX</h2>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <p className="text-white/50 text-xs tracking-widest uppercase mb-1">Full-Service IT Company</p>
+                <h2 className="text-white text-3xl font-bold">GrandNetX</h2>
+                <div className="mt-3 h-px w-full bg-gradient-to-r from-white/30 to-transparent" />
               </div>
             </div>
-            <div className="absolute -top-4 -right-4 bg-black border border-[#4f8aff]/25 rounded-2xl px-5 py-3 hidden md:block">
+            {/* Floating badge */}
+            <div className="absolute -top-4 -right-4 bg-black rounded-2xl px-5 py-3 hidden md:block shadow-xl">
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#00e5ff] animate-pulse" />
-                <span className="text-white/70 text-sm">Open for Projects</span>
+                <div className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                <span className="text-white/60 text-sm font-medium">Open for Projects</span>
               </div>
+            </div>
+            {/* Year badge */}
+            <div className="absolute bottom-6 -right-4 bg-white rounded-2xl px-5 py-3 hidden md:block shadow-lg border border-black/6">
+              <p className="text-black/30 text-xs tracking-widest uppercase">Est.</p>
+              <p className="text-black font-bold text-xl">2022</p>
             </div>
           </div>
 
           {/* Right — stats + text */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-8 reveal-right">
             <div>
-              <p className="text-[#4f8aff] text-sm tracking-widest uppercase mb-3">By the numbers</p>
-              <h2 className="gradient-title md:text-5xl text-3xl font-bold leading-tight">
+              <div className="chapter-marker">
+                <span className="chapter-marker-line" />
+                <span className="chapter-marker-text">By the numbers</span>
+              </div>
+              <h2 className="text-black md:text-5xl text-3xl font-bold leading-tight">
                 Turning ideas into<br />
-                <span className="gradient-title-accent">real products</span>
+                <span className="text-black/20">real products</span>
               </h2>
-              <p className="text-white/40 mt-4 md:text-base text-sm leading-relaxed max-w-md">
+              <p className="text-black/35 mt-4 md:text-base text-sm leading-relaxed max-w-md">
                 From concept to deployment — GrandNetX builds fast, scalable, and visually stunning
                 digital solutions that drive real business growth.
               </p>
@@ -50,26 +105,13 @@ const Stats = () => {
 
             <div className="grid grid-cols-2 gap-4">
               {statsList.map((stat, i) => (
-                <div key={i} className="glow-card rounded-2xl p-6">
-                  <h3 className="gradient-title-accent md:text-5xl text-4xl font-bold">{stat.number}</h3>
-                  <p className="text-white/40 text-sm mt-2">{stat.label}</p>
-                </div>
+                <StatCard key={i} stat={stat} index={i} visible={visible} />
               ))}
             </div>
 
             <div className="flex gap-4">
-              <a
-                href="#projects"
-                className="px-6 py-3 rounded-xl bg-[#4f8aff]/10 border border-[#4f8aff]/25 hover:bg-[#4f8aff]/20 hover:border-[#4f8aff]/50 text-white/80 hover:text-white text-sm transition-all duration-300"
-              >
-                View Projects →
-              </a>
-              <a
-                href="#contact"
-                className="px-6 py-3 rounded-xl bg-[#00e5ff]/10 border border-[#00e5ff]/25 hover:bg-[#00e5ff]/20 hover:border-[#00e5ff]/50 text-white/80 hover:text-white text-sm transition-all duration-300"
-              >
-                Contact Us →
-              </a>
+              <a href="#projects" className="btn-primary">View Projects →</a>
+              <a href="#contact" className="btn-secondary">Contact Us →</a>
             </div>
           </div>
         </div>

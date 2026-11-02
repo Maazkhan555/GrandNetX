@@ -6,38 +6,26 @@ import gsap from "gsap";
 const Carousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const nextSlide = () => {
-    setCurrentSlide((prevSlide) => (prevSlide + 1) % slides.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide(
-      (prevSlide) => (prevSlide - 1 + slides.length) % slides.length
-    );
-  };
+  const nextSlide = () => setCurrentSlide((p) => (p + 1) % slides.length);
+  const prevSlide = () => setCurrentSlide((p) => (p - 1 + slides.length) % slides.length);
 
   useGSAP(() => {
-    const tl = gsap.timeline();
-
-    tl.to(".slider-item", {
+    gsap.to(".slider-item", {
       x: `-${currentSlide * 63}vw`,
-      duration: 1,
-      ease: "power2.inOut",
+      duration: 0.9,
+      ease: "power3.inOut",
     });
   }, [currentSlide]);
 
   return (
     <div className="relative">
-      <div className="w-full relative lg:h-[60vh] md:h-[40vh] h-[60vh]">
-        <div className="carousel-gradient-left-box md:w-52 w-16 h-full absolute bottom-0 left-0 z-20"></div>
-        <div className="carousel-gradient-right-box md:w-52 w-16 h-full absolute bottom-0 right-0 z-20"></div>
+      <div className="w-full relative lg:h-[62vh] md:h-[42vh] h-[55vh]">
+        <div className="carousel-gradient-left-box md:w-48 w-12 h-full absolute bottom-0 left-0 z-20" />
+        <div className="carousel-gradient-right-box md:w-48 w-12 h-full absolute bottom-0 right-0 z-20" />
         <div className="absolute w-full -left-[43vw] top-0">
-          <div className="flex w-full lg:h-[60vh] md:h-[40vh] h-[60vh] items-center gap-[3vw]">
+          <div className="flex w-full lg:h-[62vh] md:h-[42vh] h-[55vh] items-center gap-[3vw]">
             {slides.map((slide, index) => (
-              <div
-                className="slider-item w-[60vw] h-full flex-none relative"
-                key={index}
-              >
+              <div className="slider-item w-[60vw] h-full flex-none relative rounded-2xl overflow-hidden" key={index}>
                 {slide.type === "video" ? (
                   <video
                     src={slide.src}
@@ -48,32 +36,21 @@ const Carousel = () => {
                     className="w-full h-full object-cover object-center"
                   />
                 ) : (
-                  <img
-                    src={slide.src}
-                    alt={slide.title}
-                    className="w-full h-full object-cover object-center"
-                  />
+                  <img src={slide.src} alt={slide.title} className="w-full h-full object-cover object-center" />
                 )}
-                <div className="absolute w-full h-20 bottom-0 left-0 bg-black-300 bg-opacity-90 px-5">
-                  <div className="w-full h-full flex justify-between items-center">
-                    <div className="flex-center gap-2">
-                      <p className="md:text-2xl text-white-50 opacity-80">
-                        {index + 1}.
-                      </p>
-                      <p className="md:text-2xl text-white-50 opacity-80">
-                        {slide.title}
-                      </p>
-                    </div>
-                    <div className="flex-center gap-5">
-                      <p className="text-2xl hidden md:block text-white-50 opacity-80">
-                        Preview Project
-                      </p>
-                      <img
-                        src="/images/arrowupright.svg"
-                        alt="arrow"
-                        className="md:size-10 size-7"
-                      />
-                    </div>
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 px-6 py-5 flex justify-between items-end">
+                  <div className="flex items-center gap-3">
+                    <span className="text-white/40 text-sm font-bold">{String(index + 1).padStart(2, "0")}</span>
+                    <div className="w-px h-4 bg-white/20" />
+                    <span className="text-white/80 text-sm font-medium">{slide.title}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-white/50 text-xs tracking-widest uppercase">
+                    <span className="hidden md:block">Preview</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4">
+                      <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -81,19 +58,28 @@ const Carousel = () => {
           </div>
         </div>
       </div>
-      <div className="mt-10 text-white-50 flex justify-end gap-5 md:-translate-x-32 -translate-x-5">
-        <div
+
+      {/* Controls */}
+      <div className="mt-8 flex items-center justify-end gap-3 md:pr-32 pr-5">
+        <span className="text-black/25 text-xs tracking-widest uppercase mr-2">
+          {String(currentSlide + 1).padStart(2, "0")} / {String(slides.length).padStart(2, "0")}
+        </span>
+        <button
           onClick={prevSlide}
-          className="rounded-full cursor-pointer bg-blue-50 hover:bg-pink-100 active:scale-90 transition-all w-12 h-12 flex-center"
+          className="w-11 h-11 rounded-full border border-black/12 flex items-center justify-center hover:bg-black hover:border-black hover:text-white text-black/40 transition-all duration-300 active:scale-95"
         >
-          <img src="/images/CaretLeft.svg" alt="left" className="w-5 h-5" />
-        </div>
-        <div
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <button
           onClick={nextSlide}
-          className="rounded-full cursor-pointer bg-blue-50 hover:bg-pink-100 active:scale-90 transition-all w-12 h-12 flex-center"
+          className="w-11 h-11 rounded-full bg-black flex items-center justify-center hover:bg-black/80 text-white transition-all duration-300 active:scale-95"
         >
-          <img src="/images/CaretRight.svg" alt="Right" className="w-5 h-5" />
-        </div>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
       </div>
     </div>
   );

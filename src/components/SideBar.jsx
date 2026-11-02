@@ -45,7 +45,7 @@ const SideBar = () => {
       <div className="fixed z-[100] top-7 right-5" onClick={toggleSideBar}>
         <img src="images/menu-icon.png" alt="menu" />
       </div>
-      <div className="fixed z-[100] -translate-x-[100%] w-screen h-dvh side-bar-bg">
+      <div className="fixed z-[100] -translate-x-[100%] w-screen h-dvh bg-[#fafafa]/98 backdrop-blur-xl border-r border-black/5">
         <div className="flex justify-end m-5" onClick={toggleSideBar}>
           <img src="images/x.png" alt="close" />
         </div>
@@ -57,8 +57,9 @@ const SideBar = () => {
                 className="side-bar-item opacity-0 cursor-pointer hover:underline transition-all duration-700"
               >
                 <a
-                  className="gradient-title text-2xl font-bold"
+                  className="text-black text-2xl font-bold hover:text-black/50 transition-colors"
                   href={item.href}
+                  onClick={toggleSideBar}
                 >
                   {item.name}
                 </a>

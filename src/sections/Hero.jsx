@@ -1,141 +1,161 @@
-import { useEffect, useState } from "react";
-import GradientSpheres from "../components/GradientSpheres";
+import { useEffect, useState, useRef } from "react";
 import HeroExperience from "../components/HeroExperience";
 
-const words = ["INNOVATIVE", "INTELLIGENT", "SCALABLE", "POWERFUL"];
+const words = ["INNOVATIVE", "INTELLIGENT", "SCALABLE", "POWERFUL", "UNSTOPPABLE"];
 
-const floatingBadges = [
-  { label: "AI Integration", color: "#a855f7", delay: "0s" },
-  { label: "Mobile Apps", color: "#4f8aff", delay: "0.4s" },
-  { label: "Web Development", color: "#00e5ff", delay: "0.8s" },
-  { label: "UI/UX Design", color: "#f472b6", delay: "1.2s" },
+const tickerItems = [
+  "Software Development", "AI & Machine Learning", "Web Development",
+  "Mobile Apps", "UI/UX Design", "Digital Marketing", "Cloud & DevOps",
+  "Cybersecurity", "Data Analytics", "Branding", "Automation",
 ];
 
 const Hero = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const cursorRef = useRef(null);
+  const ringRef = useRef(null);
 
   useEffect(() => {
     const current = words[wordIndex];
     let timeout;
     if (!deleting && displayed.length < current.length) {
-      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 80);
+      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 70);
     } else if (!deleting && displayed.length === current.length) {
-      timeout = setTimeout(() => setDeleting(true), 1800);
+      timeout = setTimeout(() => setDeleting(true), 2000);
     } else if (deleting && displayed.length > 0) {
-      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length - 1)), 45);
-    } else if (deleting && displayed.length === 0) {
+      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length - 1)), 40);
+    } else {
       setDeleting(false);
       setWordIndex((i) => (i + 1) % words.length);
     }
     return () => clearTimeout(timeout);
   }, [displayed, deleting, wordIndex]);
 
+  useEffect(() => {
+    const move = (e) => {
+      if (cursorRef.current) {
+        cursorRef.current.style.left = e.clientX + "px";
+        cursorRef.current.style.top = e.clientY + "px";
+      }
+      if (ringRef.current) {
+        setTimeout(() => {
+          if (ringRef.current) {
+            ringRef.current.style.left = e.clientX + "px";
+            ringRef.current.style.top = e.clientY + "px";
+          }
+        }, 60);
+      }
+    };
+    window.addEventListener("mousemove", move);
+    return () => window.removeEventListener("mousemove", move);
+  }, []);
+
   return (
-    <section
-      id="home"
-      className="w-screen h-dvh overflow-hidden relative text-white-50"
-    >
-      <GradientSpheres
-        sphere1Class="gradient-sphere sphere-1"
-        sphere2Class="gradient-sphere sphere-2"
-      />
+    <>
+      <div ref={cursorRef} className="custom-cursor" />
+      <div ref={ringRef} className="custom-cursor-ring" />
 
-      {/* Grid background */}
-      <div className="absolute inset-0 z-0 hero-grid opacity-20 pointer-events-none" />
+      <section id="home" className="w-screen h-dvh overflow-hidden relative bg-[#fafafa] noise">
 
-      {/* 3D model — full section */}
-      <div className="absolute inset-0 z-[1]">
-        <HeroExperience />
-      </div>
+        {/* Grid */}
+        <div className="absolute inset-0 z-0 hero-grid pointer-events-none" />
 
-      {/* Top gradient */}
-      <div className="absolute top-0 left-0 w-full h-72 z-[2] bg-gradient-to-b from-black via-black/60 to-transparent pointer-events-none" />
+        {/* Spheres */}
+        <div className="gradient-sphere sphere-1 absolute" />
+        <div className="gradient-sphere sphere-2 absolute" />
 
-      {/* Bottom gradient */}
-      <div className="absolute bottom-0 left-0 w-full h-96 z-[2] bg-gradient-to-t from-black via-black/70 to-transparent pointer-events-none" />
-
-      {/* Left gradient — keeps left text readable */}
-      <div className="absolute top-0 left-0 w-1/3 h-full z-[2] bg-gradient-to-r from-black/60 to-transparent pointer-events-none hidden md:block" />
-
-      {/* ── TOP CONTENT ── */}
-      <div className="absolute top-0 left-0 z-[10] w-full md:px-16 px-5 md:pt-36 pt-28">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#4f8aff]/30 bg-black/50 backdrop-blur-md mb-6">
-          <div className="w-2 h-2 rounded-full bg-[#00e5ff] animate-pulse" />
-          <span className="text-white/60 text-xs tracking-widest uppercase">Open for Projects — Let&apos;s Build Together</span>
-        </div>
-
-        {/* Main heading */}
-        <h1 className="font-bold md:text-[7rem] text-5xl gradient-title leading-none tracking-tight">
-          GRANDNETX
-        </h1>
-
-        {/* Typewriter line */}
-        <div className="flex items-center gap-3 md:mt-2 mt-1">
-          <h1 className="font-bold md:text-[7rem] text-5xl leading-none tracking-tight text-white/90">
-            {displayed}
+        {/* ── GRANDNETX — behind 3D model (z-0) ── */}
+        <div className="absolute top-0 left-0 z-0 w-full md:px-16 px-5 md:pt-36 pt-28 pointer-events-none">
+          <h1 className="cinematic-title animate-fade-up" style={{ animationDelay: "0.15s" }}>
+            GRANDNETX
           </h1>
-          <span className="md:text-[7rem] text-5xl font-bold text-[#4f8aff] leading-none animate-pulse">|</span>
         </div>
-      </div>
 
-      {/* ── FLOATING SERVICE BADGES (desktop only) ── */}
-      <div className="absolute top-1/2 right-12 -translate-y-1/2 z-[10] hidden md:flex flex-col gap-3">
-        {floatingBadges.map((b, i) => (
-          <div
-            key={i}
-            className="flex items-center gap-2 px-4 py-2 rounded-full border bg-black/50 backdrop-blur-md hero-float"
-            style={{ borderColor: `${b.color}40`, animationDelay: b.delay }}
-          >
-            <div className="w-1.5 h-1.5 rounded-full" style={{ background: b.color }} />
-            <span className="text-white/70 text-xs font-medium">{b.label}</span>
+        {/* 3D model — sits above the title (z-1) */}
+        <div className="absolute inset-0 z-[1]">
+          <HeroExperience />
+        </div>
+
+        {/* Fades */}
+        <div className="hero-fade-top absolute top-0 left-0 w-full h-64 z-[2] bg-gradient-to-b from-[#fafafa] via-[#fafafa]/70 to-transparent pointer-events-none" />
+        <div className="hero-fade-bottom absolute bottom-0 left-0 w-full h-96 z-[2] bg-gradient-to-t from-[#fafafa] via-[#fafafa]/80 to-transparent pointer-events-none" />
+        <div className="hero-fade-left absolute top-0 left-0 w-2/5 h-full z-[2] bg-gradient-to-r from-[#fafafa]/85 to-transparent pointer-events-none hidden md:block" />
+
+        {/* ── UI OVERLAY — above everything (z-10) ── */}
+        <div className="absolute top-0 left-0 z-[10] w-full md:px-16 px-5 md:pt-36 pt-28">
+
+          {/* Chapter marker */}
+          <div className="chapter-marker animate-fade-in">
+            <span className="chapter-marker-line" />
+            <span className="chapter-marker-text">Chapter I — The Opening</span>
           </div>
-        ))}
-      </div>
 
-      {/* ── BOTTOM CONTENT ── */}
-      <div className="absolute bottom-0 left-0 z-[10] w-full md:px-16 px-5 md:pb-16 pb-10">
-        <div className="flex justify-between items-end gap-6">
+          {/* Status badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-black/8 bg-white/80 backdrop-blur-md mb-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+            <div className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
+            <span className="text-black/45 text-xs tracking-widest uppercase font-medium">Open for Projects — Let&apos;s Build Together</span>
+          </div>
 
-          {/* Left — tagline + buttons */}
-          <div className="max-w-lg">
-            <p className="text-white/50 md:text-lg text-sm leading-relaxed mb-6">
-              We build software, apps, AI systems, and digital brands.<br />
-              From idea to launch — everything under one roof.
-            </p>
-            <div className="flex items-center gap-3 flex-wrap">
-              <a
-                href="#services"
-                className="hero-btn-primary px-7 py-3 rounded-full bg-[#4f8aff] text-white font-semibold text-sm transition-all duration-300"
-              >
-                Explore Services
-              </a>
-              <a
-                href="#contact"
-                className="px-7 py-3 rounded-full border border-white/20 text-white/70 font-semibold text-sm hover:border-white/50 hover:text-white transition-all duration-300 backdrop-blur-sm"
-              >
-                Get a Free Quote →
-              </a>
+          {/* Spacer to push typewriter below the title that's behind the model */}
+          <div className="md:mt-[7.5rem] mt-[4.5rem] animate-fade-up" style={{ animationDelay: "0.25s" }}>
+            <div className="flex items-center gap-3">
+              <h1 className="cinematic-title text-black/75 min-w-[2ch]">{displayed}</h1>
+              <span className="cinematic-title text-black/20 animate-blink">|</span>
             </div>
           </div>
+        </div>
 
-          {/* Right — IT SOLUTIONS + scroll */}
-          <div className="flex flex-col items-end gap-4 flex-shrink-0">
-            <h1 className="font-bold md:text-[5rem] text-3xl leading-none text-white/20 tracking-tight hidden md:block">
-              IT SOLUTIONS
-            </h1>
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-white/20 text-xs tracking-widest uppercase">Scroll</span>
-              <img src="images/arrowdown.svg" alt="scroll" className="size-5 animate-bounce opacity-20" />
+        {/* ── BOTTOM ── */}
+        <div className="absolute bottom-0 left-0 z-[10] w-full md:px-16 px-5 md:pb-24 pb-20">
+          <div className="flex justify-between items-end gap-6">
+            <div className="max-w-lg animate-fade-up" style={{ animationDelay: "0.35s" }}>
+              <p className="text-black/40 md:text-lg text-sm leading-relaxed mb-6">
+                We build software, apps, AI systems, and digital brands.<br />
+                From idea to launch — everything under one roof.
+              </p>
+              <div className="flex items-center gap-3 flex-wrap">
+                <a href="#services" className="btn-primary hero-btn-primary">
+                  Explore Services
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="w-4 h-4">
+                    <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </a>
+                <a href="#contact" className="btn-secondary">
+                  Get a Free Quote
+                </a>
+              </div>
+            </div>
+
+            {/* Scroll indicator */}
+            <div className="hidden md:flex flex-col items-end gap-4 flex-shrink-0">
+              <div className="cinematic-title-ghost text-right" style={{ fontSize: "clamp(2rem, 5vw, 5rem)" }}>
+                IT SOLUTIONS
+              </div>
+              <div className="flex flex-col items-center gap-1.5">
+                <span className="text-black/20 text-xs tracking-widest uppercase">Scroll to explore</span>
+                <div className="w-px h-8 bg-gradient-to-b from-black/20 to-transparent" />
+              </div>
             </div>
           </div>
-
         </div>
-      </div>
 
-    </section>
+        {/* ── TICKER STRIP ── */}
+        <div className="hero-ticker absolute bottom-0 left-0 right-0 z-[3] border-t border-black/5 bg-white/60 backdrop-blur-sm py-2.5 overflow-hidden">
+          <div className="story-ticker">
+            <div className="story-ticker-inner">
+              {[...tickerItems, ...tickerItems].map((item, i) => (
+                <span key={i} className="inline-flex items-center gap-4 px-6 text-xs tracking-widest uppercase text-black/30 font-medium">
+                  {item}
+                  <span className="w-1 h-1 rounded-full bg-black/15 flex-shrink-0" />
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </>
   );
 };
 
