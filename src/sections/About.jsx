@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense } from "react";
 import { Zap, Target, ShieldCheck } from "lucide-react";
 import { Alien } from "../components/models/Alien";
 import TitleHeader from "../components/TitleHeader";
@@ -20,26 +20,15 @@ const values = [
 ];
 
 const Model3D = () => {
-  const containerRef = useRef(null);
-
-  useEffect(() => {
-    // Force canvas to remeasure after mount
-    const t = setTimeout(() => {
-      window.dispatchEvent(new Event("resize"));
-    }, 200);
-    return () => clearTimeout(t);
-  }, []);
-
   return (
-    <div ref={containerRef} className="canvas-container">
+    <div className="canvas-container">
       <Canvas
-        frameloop="always"
-        camera={{ position: [0, 2, 12], fov: 35 }}
-        gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+        camera={{ position: [0, 0, 5], fov: 45 }}
+        gl={{ antialias: true, alpha: false }}
         style={{ background: "#0a0a0a" }}
       >
-        <ambientLight intensity={2} />
-        <directionalLight position={[0, 5, 5]} intensity={4} color="#ffffff" />
+        <ambientLight intensity={3} />
+        <directionalLight position={[5, 5, 5]} intensity={4} />
         <directionalLight position={[-3, 2, 3]} intensity={3} color="#FF28D5" />
         <directionalLight position={[3, 0, 3]} intensity={3} color="#1C34FF" />
         <OrbitControls
@@ -47,11 +36,9 @@ const Model3D = () => {
           enablePan={false}
           autoRotate
           autoRotateSpeed={2}
-          minPolarAngle={Math.PI / 3}
-          maxPolarAngle={Math.PI / 1.8}
         />
-        <Suspense fallback={<mesh><boxGeometry args={[0.01,0.01,0.01]} /><meshBasicMaterial transparent opacity={0} /></mesh>}>
-          <Alien scale={1.8} position={[0, -2.8, 0]} rotation={[0, -0.5, 0]} />
+        <Suspense fallback={null}>
+          <Alien scale={1.5} position={[0, -1, 0]} />
         </Suspense>
       </Canvas>
       <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
