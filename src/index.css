@@ -49,7 +49,6 @@ html {
 
 html, body {
   width: 100dvw;
-  overflow-x: hidden;
   background-color: var(--paper);
   color: var(--ink);
   font-family: "aeonik", sans-serif;
@@ -82,7 +81,7 @@ a, button, [role="button"], input, textarea, select, label { cursor: pointer; }
   right: 24px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 200;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   gap: 12px;

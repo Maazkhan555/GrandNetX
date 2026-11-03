@@ -76,7 +76,7 @@ const MainContent = () => {
         href="https://wa.me/923103581426"
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-6 right-6 z-[999] w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-[0_4px_24px_rgba(37,211,102,0.45)] hover:scale-110 hover:shadow-[0_8px_32px_rgba(37,211,102,0.55)] transition-all duration-300"
+        className="fixed bottom-6 right-20 z-[999] w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center shadow-[0_4px_24px_rgba(37,211,102,0.45)] hover:scale-110 hover:shadow-[0_8px_32px_rgba(37,211,102,0.55)] transition-all duration-300"
         aria-label="Chat on WhatsApp"
       >
         <svg viewBox="0 0 24 24" fill="white" className="w-7 h-7">
@@ -108,7 +108,7 @@ const App = () => {
 
   return (
     <Router>
-      <div className="bg-[#fafafa]">
+      <div className="bg-[#fafafa] overflow-x-hidden">
         <Routes>
           <Route path="/" element={<MainContent />} />
           <Route path="*" element={<NotFound />} />
