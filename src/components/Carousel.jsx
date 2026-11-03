@@ -41,12 +41,25 @@ const Carousel = () => {
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 px-6 py-5 flex justify-between items-end">
-                  <div className="flex items-center gap-3">
-                    <span className="text-white/40 text-sm font-bold">{String(index + 1).padStart(2, "0")}</span>
-                    <div className="w-px h-4 bg-white/20" />
-                    <span className="text-white/80 text-sm font-medium">{slide.title}</span>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[10px] font-semibold tracking-widest uppercase px-2.5 py-0.5 rounded-full bg-white/10 text-white/60 border border-white/10">
+                        {slide.category}
+                      </span>
+                      {slide.tags?.map((tag) => (
+                        <span key={tag} className="hidden md:inline text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-white/40 border border-white/8">{tag}</span>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="text-white/40 text-sm font-bold">{String(index + 1).padStart(2, "0")}</span>
+                      <div className="w-px h-4 bg-white/20" />
+                      <span className="text-white font-semibold text-sm">{slide.title}</span>
+                    </div>
+                    {slide.tagline && (
+                      <p className="text-white/45 text-xs mt-1 max-w-xs leading-relaxed hidden md:block">{slide.tagline}</p>
+                    )}
                   </div>
-                  <div className="flex items-center gap-2 text-white/50 text-xs tracking-widest uppercase">
+                  <div className="flex items-center gap-2 text-white/50 text-xs tracking-widest uppercase flex-shrink-0">
                     <span className="hidden md:block">Preview</span>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-4 h-4">
                       <line x1="7" y1="17" x2="17" y2="7" /><polyline points="7 7 17 7 17 17" />
