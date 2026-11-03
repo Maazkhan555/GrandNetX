@@ -63,17 +63,21 @@ const About = () => {
 
           {/* ── CARD 2: 3D Model ── */}
           <div className="md:col-span-5 reveal-right">
-            <div className="bg-[#0a0a0a] rounded-3xl overflow-hidden relative h-[280px] md:h-full min-h-[280px] group">
-              <Canvas frameloop="always">
-                <ambientLight intensity={0.5} />
-                <directionalLight position={[-2, 2, 3]} intensity={2} color="#FF28D5" />
-                <directionalLight position={[2, 0, 3]} intensity={2} color="#1C34FF" />
+            <div className="bg-[#0a0a0a] rounded-3xl overflow-hidden relative group" style={{ height: "420px" }}>
+              <Canvas
+                frameloop="always"
+                camera={{ position: [0, 0, 8], fov: 45 }}
+                style={{ width: "100%", height: "100%" }}
+              >
+                <ambientLight intensity={1} />
+                <directionalLight position={[-2, 2, 3]} intensity={3} color="#FF28D5" />
+                <directionalLight position={[2, 0, 3]} intensity={3} color="#1C34FF" />
+                <directionalLight position={[0, 5, 0]} intensity={1.5} color="#ffffff" />
                 <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.5} />
                 <Suspense fallback={null}>
-                  <Alien scale={2} position={[0, -5.5, 0]} rotation={[0, -0.5, 0]} />
+                  <Alien scale={2.5} position={[0, -4.5, 0]} rotation={[0, -0.5, 0]} />
                 </Suspense>
               </Canvas>
-              {/* Overlay label */}
               <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
                 <p className="text-white/40 text-[10px] tracking-[0.25em] uppercase">3D Interactive — Drag to rotate</p>
               </div>

@@ -8,7 +8,9 @@ const chapters = [
   { id: "why-us", label: "Difference" },
   { id: "process", label: "Method" },
   { id: "projects", label: "Work" },
+  { id: "pricing", label: "Investment" },
   { id: "testimonials", label: "Impact" },
+  { id: "faq", label: "FAQ" },
   { id: "contact", label: "Connect" },
 ];
 
