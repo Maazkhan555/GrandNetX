@@ -64,7 +64,7 @@ const About = () => {
           {/* ── CARD 2: 3D Model ── */}
           <div className="md:col-span-5 reveal-right">
             <div className="bg-[#0a0a0a] rounded-3xl overflow-hidden relative h-[280px] md:h-full min-h-[280px] group">
-              <Canvas frameloop="demand">
+              <Canvas frameloop="always">
                 <ambientLight intensity={0.5} />
                 <directionalLight position={[-2, 2, 3]} intensity={2} color="#FF28D5" />
                 <directionalLight position={[2, 0, 3]} intensity={2} color="#1C34FF" />

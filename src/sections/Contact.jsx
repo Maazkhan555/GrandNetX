@@ -6,7 +6,7 @@ const Contact = () => {
   return (
     <section id="contact" className="relative md:px-0 px-5 bg-[#fafafa] py-24 md:py-32">
       <div className="container mx-auto">
-        <TitleHeader title="Contact Us" number="09" text="Let's build something great together" />
+        <TitleHeader title="Contact Us" number="10" text="Let's build something great together" />
         <div className="mt-16 md:mt-20">
           <div className="grid grid-cols-12">
             <div className="md:col-span-5 col-span-12 md:order-none order-1 relative z-10">

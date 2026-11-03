@@ -4,6 +4,7 @@ const navItems = [
   { name: "Services", href: "#services" },
   { name: "Founders", href: "#founders" },
   { name: "Projects", href: "#projects" },
+  { name: "Pricing", href: "#pricing" },
   { name: "Process", href: "#process" },
   { name: "FAQ", href: "#faq" },
   { name: "Contact", href: "#contact" },

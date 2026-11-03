@@ -49,7 +49,7 @@ const FAQ = () => {
     <section id="faq" className="relative md:px-0 px-5 bg-[#fafafa] py-24 md:py-32">
       <GradientSpheres sphere1Class="about-gradient-sphere about-sphere-2" sphere2Class="about-gradient-sphere about-sphere-1" />
       <div className="container mx-auto relative z-10">
-        <TitleHeader title="FAQ" number="08" text="Answers to the most common questions" />
+        <TitleHeader title="FAQ" number="09" text="Answers to the most common questions" />
 
         <div className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-0 max-w-5xl mx-auto reveal">
           <div>
