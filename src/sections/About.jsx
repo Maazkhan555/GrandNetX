@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { Zap, Target, ShieldCheck } from "lucide-react";
 import { Alien } from "../components/models/Alien";
 import TitleHeader from "../components/TitleHeader";
@@ -20,6 +20,11 @@ const values = [
 ];
 
 const About = () => {
+  // Dispatch resize after mount so Canvas measures its container correctly
+  useEffect(() => {
+    const t = setTimeout(() => window.dispatchEvent(new Event("resize")), 100);
+    return () => clearTimeout(t);
+  }, []);
   return (
     <section id="about" className="relative px-5 md:px-0 bg-[#fafafa] py-24 md:py-32 overflow-hidden">
 
@@ -62,17 +67,18 @@ const About = () => {
           </div>
 
           {/* ── CARD 2: 3D Model ── */}
-          <div className="md:col-span-5 reveal-right">
+          <div className="md:col-span-5">
             <div className="bg-[#0a0a0a] rounded-3xl overflow-hidden relative group" style={{ height: "420px" }}>
               <Canvas
                 frameloop="always"
                 camera={{ position: [0, 0, 8], fov: 45 }}
-                style={{ width: "100%", height: "100%" }}
+                style={{ width: "100%", height: "100%", display: "block" }}
+                gl={{ antialias: true, alpha: false }}
               >
-                <ambientLight intensity={1} />
+                <ambientLight intensity={1.5} />
                 <directionalLight position={[-2, 2, 3]} intensity={3} color="#FF28D5" />
                 <directionalLight position={[2, 0, 3]} intensity={3} color="#1C34FF" />
-                <directionalLight position={[0, 5, 0]} intensity={1.5} color="#ffffff" />
+                <directionalLight position={[0, 5, 2]} intensity={2} color="#ffffff" />
                 <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.5} />
                 <Suspense fallback={null}>
                   <Alien scale={2.5} position={[0, -4.5, 0]} rotation={[0, -0.5, 0]} />
