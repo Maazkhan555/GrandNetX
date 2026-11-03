@@ -854,7 +854,7 @@ img { transition: opacity 0.3s ease; }
   height: 420px;
   border-radius: 1.5rem;
   overflow: hidden;
-  background: #f0f0f0;
+  background: #0a0a0a;
 }
 .canvas-container canvas {
   display: block !important;

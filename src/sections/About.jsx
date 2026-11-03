@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Zap, Target, ShieldCheck } from "lucide-react";
 import { Alien } from "../components/models/Alien";
 import TitleHeader from "../components/TitleHeader";
@@ -20,15 +20,26 @@ const values = [
 ];
 
 const Model3D = () => {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    // Force canvas to remeasure after mount
+    const t = setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+    }, 200);
+    return () => clearTimeout(t);
+  }, []);
+
   return (
-    <div className="canvas-container">
+    <div ref={containerRef} className="canvas-container">
       <Canvas
-        camera={{ position: [0, 0.5, 5], fov: 45 }}
-        gl={{ antialias: true, alpha: false }}
-        style={{ background: "#f0f0f0" }}
+        frameloop="always"
+        camera={{ position: [0, 2, 12], fov: 35 }}
+        gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+        style={{ background: "#0a0a0a" }}
       >
-        <ambientLight intensity={3} />
-        <directionalLight position={[5, 5, 5]} intensity={4} />
+        <ambientLight intensity={2} />
+        <directionalLight position={[0, 5, 5]} intensity={4} color="#ffffff" />
         <directionalLight position={[-3, 2, 3]} intensity={3} color="#FF28D5" />
         <directionalLight position={[3, 0, 3]} intensity={3} color="#1C34FF" />
         <OrbitControls
@@ -36,13 +47,15 @@ const Model3D = () => {
           enablePan={false}
           autoRotate
           autoRotateSpeed={2}
+          minPolarAngle={Math.PI / 3}
+          maxPolarAngle={Math.PI / 1.8}
         />
         <Suspense fallback={null}>
-          <Alien scale={1.5} position={[0, -1, 0]} />
+          <Alien scale={1.8} position={[0, -2.8, 0]} rotation={[0, -0.5, 0]} />
         </Suspense>
       </Canvas>
-      <div className="absolute bottom-0 left-0 right-0 p-5 pointer-events-none">
-        <p className="text-black/30 text-[10px] tracking-[0.25em] uppercase">3D Interactive — Drag to rotate</p>
+      <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
+        <p className="text-white/40 text-[10px] tracking-[0.25em] uppercase">3D Interactive — Drag to rotate</p>
       </div>
     </div>
   );
