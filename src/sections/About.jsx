@@ -21,11 +21,11 @@ const values = [
 
 const Model3D = () => {
   return (
-    <div className="canvas-container">
+    <div className="canvas-container flex items-center justify-center" style={{ background: "transparent" }}>
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 45 }}
-        gl={{ antialias: true, alpha: false }}
-        style={{ background: "#0a0a0a" }}
+        camera={{ position: [0, 0.5, 5], fov: 45 }}
+        gl={{ antialias: true, alpha: true }}
+        style={{ background: "transparent" }}
       >
         <ambientLight intensity={3} />
         <directionalLight position={[5, 5, 5]} intensity={4} />
@@ -41,8 +41,8 @@ const Model3D = () => {
           <Alien scale={1.5} position={[0, -1, 0]} />
         </Suspense>
       </Canvas>
-      <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
-        <p className="text-white/40 text-[10px] tracking-[0.25em] uppercase">3D Interactive — Drag to rotate</p>
+      <div className="absolute bottom-0 left-0 right-0 p-5 pointer-events-none">
+        <p className="text-black/30 text-[10px] tracking-[0.25em] uppercase">3D Interactive — Drag to rotate</p>
       </div>
     </div>
   );
