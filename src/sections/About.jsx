@@ -34,7 +34,7 @@ const Model3D = () => {
     <div ref={containerRef} className="canvas-container">
       <Canvas
         frameloop="always"
-        camera={{ position: [0, 2, 12], fov: 35 }}
+        camera={{ position: [0, 3.5, 12], fov: 35 }}
         gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
         style={{ background: "#0a0a0a" }}
       >
