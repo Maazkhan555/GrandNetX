@@ -18,28 +18,21 @@ const StoryProgress = () => {
   const [active, setActive] = useState("home");
 
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
-      { threshold: 0.3, rootMargin: "0px 0px -20% 0px" }
-    );
-
-    const attach = () => {
-      chapters.forEach(({ id }) => {
+    const onScroll = () => {
+      const mid = window.innerHeight / 2;
+      let current = "home";
+      for (const { id } of chapters) {
         const el = document.getElementById(id);
-        if (el) io.observe(el);
-      });
+        if (!el) continue;
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= mid) current = id;
+      }
+      setActive(current);
     };
 
-    // Attach immediately, then retry after lazy sections mount
-    attach();
-    const t1 = setTimeout(attach, 500);
-    const t2 = setTimeout(attach, 1500);
-
-    // Also watch for new sections added by Suspense
-    const mo = new MutationObserver(attach);
-    mo.observe(document.body, { childList: true, subtree: true });
-
-    return () => { io.disconnect(); mo.disconnect(); clearTimeout(t1); clearTimeout(t2); };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll(); // run once on mount
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (

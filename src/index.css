@@ -99,7 +99,6 @@ a, button, [role="button"], input, textarea, select, label { cursor: pointer; }
 }
 .chapter-dot.active {
   background: var(--ink);
-  transform: scale(1.5);
 }
 .chapter-dot:hover {
   background: var(--ink);
@@ -836,12 +835,32 @@ img { transition: opacity 0.3s ease; }
   0%, 100% { box-shadow: 0 0 0 0 rgba(10,10,10,0.3); }
   50% { box-shadow: 0 0 0 4px rgba(10,10,10,0); }
 }
-.chapter-dot.active { animation: dotPulse 2s ease infinite; }
+.chapter-dot.active {
+  background: var(--ink) !important;
+  width: 8px !important;
+  height: 8px !important;
+  animation: dotPulse 2s ease infinite;
+}
 
 /* ── MOBILE RESPONSIVE ── */
 @media (max-width: 768px) {
   .chapter-nav { display: none !important; }
   .cinematic-title { font-size: clamp(2.5rem, 12vw, 5rem); }
+}
+
+/* ── 3D CANVAS FIX ── */
+.canvas-container {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+.canvas-container canvas {
+  display: block !important;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* ════════════════════════════════════════

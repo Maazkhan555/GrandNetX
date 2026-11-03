@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { Zap, Target, ShieldCheck } from "lucide-react";
 import { Alien } from "../components/models/Alien";
 import TitleHeader from "../components/TitleHeader";
@@ -19,16 +19,52 @@ const values = [
   { icon: ShieldCheck, title: "Reliability", desc: "We ship what we promise, on time" },
 ];
 
-const About = () => {
-  // Dispatch resize after mount so Canvas measures its container correctly
+const Model3D = () => {
+  const containerRef = useRef(null);
+
   useEffect(() => {
-    const t = setTimeout(() => window.dispatchEvent(new Event("resize")), 100);
+    // Force canvas to remeasure after mount
+    const t = setTimeout(() => {
+      window.dispatchEvent(new Event("resize"));
+    }, 200);
     return () => clearTimeout(t);
   }, []);
-  return (
-    <section id="about" className="relative px-5 md:px-0 bg-[#fafafa] py-24 md:py-32 overflow-hidden">
 
-      {/* Subtle background accent */}
+  return (
+    <div ref={containerRef} className="canvas-container">
+      <Canvas
+        frameloop="always"
+        camera={{ position: [0, 0, 10], fov: 40 }}
+        gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
+        style={{ background: "#0a0a0a" }}
+      >
+        <ambientLight intensity={2} />
+        <directionalLight position={[0, 5, 5]} intensity={4} color="#ffffff" />
+        <directionalLight position={[-3, 2, 3]} intensity={3} color="#FF28D5" />
+        <directionalLight position={[3, 0, 3]} intensity={3} color="#1C34FF" />
+        <OrbitControls
+          enableZoom={false}
+          enablePan={false}
+          autoRotate
+          autoRotateSpeed={2}
+          minPolarAngle={Math.PI / 3}
+          maxPolarAngle={Math.PI / 1.8}
+        />
+        <Suspense fallback={null}>
+          <Alien scale={3} position={[0, -5, 0]} rotation={[0, -0.5, 0]} />
+        </Suspense>
+      </Canvas>
+      <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
+        <p className="text-white/40 text-[10px] tracking-[0.25em] uppercase">3D Interactive — Drag to rotate</p>
+      </div>
+    </div>
+  );
+};
+
+const About = () => {
+  return (
+    <section id="about" className="relative px-5 md:px-0 bg-[#fafafa] py-24 md:py-32">
+
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-[0.03] bg-black blur-[120px] pointer-events-none" />
 
       <div className="container mx-auto relative z-10">
@@ -36,7 +72,7 @@ const About = () => {
 
         <div className="mt-14 md:mt-20 grid grid-cols-1 md:grid-cols-12 gap-4">
 
-          {/* ── CARD 1: Identity — large left card ── */}
+          {/* CARD 1: Identity */}
           <div className="md:col-span-7 reveal-left">
             <div className="glow-card rounded-3xl p-8 md:p-10 h-full flex flex-col justify-between min-h-[320px]">
               <div>
@@ -53,8 +89,6 @@ const About = () => {
                   digital products that drive real business growth.
                 </p>
               </div>
-
-              {/* Stats row */}
               <div className="mt-8 pt-6 border-t border-black/5 grid grid-cols-4 gap-4">
                 {stats.map(({ n, l }) => (
                   <div key={l} className="text-center">
@@ -66,34 +100,14 @@ const About = () => {
             </div>
           </div>
 
-          {/* ── CARD 2: 3D Model ── */}
+          {/* CARD 2: 3D Model — NO reveal class, renders immediately */}
           <div className="md:col-span-5">
-            <div className="bg-[#0a0a0a] rounded-3xl overflow-hidden relative group" style={{ height: "420px" }}>
-              <Canvas
-                frameloop="always"
-                camera={{ position: [0, 0, 8], fov: 45 }}
-                style={{ width: "100%", height: "100%", display: "block" }}
-                gl={{ antialias: true, alpha: false }}
-              >
-                <ambientLight intensity={1.5} />
-                <directionalLight position={[-2, 2, 3]} intensity={3} color="#FF28D5" />
-                <directionalLight position={[2, 0, 3]} intensity={3} color="#1C34FF" />
-                <directionalLight position={[0, 5, 2]} intensity={2} color="#ffffff" />
-                <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={1.5} />
-                <Suspense fallback={null}>
-                  <Alien scale={2.5} position={[0, -4.5, 0]} rotation={[0, -0.5, 0]} />
-                </Suspense>
-              </Canvas>
-              <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
-                <p className="text-white/40 text-[10px] tracking-[0.25em] uppercase">3D Interactive — Drag to rotate</p>
-              </div>
-            </div>
+            <Model3D />
           </div>
 
-          {/* ── CARD 3: Mantra (black) ── */}
+          {/* CARD 3: Mantra */}
           <div className="md:col-span-4 reveal">
             <div className="bg-[#0a0a0a] rounded-3xl p-8 md:p-10 h-full min-h-[220px] flex flex-col justify-between relative overflow-hidden">
-              {/* Subtle diagonal lines */}
               <div className="absolute inset-0 opacity-[0.04]"
                 style={{ backgroundImage: "repeating-linear-gradient(-45deg, #fff, #fff 1px, transparent 1px, transparent 40px)" }} />
               <div className="relative z-10">
@@ -104,7 +118,7 @@ const About = () => {
                 <div className="space-y-1">
                   <p className="text-white font-bold text-3xl md:text-4xl tracking-tight leading-none">INNOVATE.</p>
                   <p className="text-white/35 font-bold text-3xl md:text-4xl tracking-tight leading-none">BUILD FAST.</p>
-                  <p className="text-white/12 font-bold text-3xl md:text-4xl tracking-tight leading-none">SCALE SMART.</p>
+                  <p className="text-white/20 font-bold text-3xl md:text-4xl tracking-tight leading-none">SCALE SMART.</p>
                 </div>
               </div>
               <div className="relative z-10 mt-6">
@@ -113,7 +127,7 @@ const About = () => {
             </div>
           </div>
 
-          {/* ── CARD 4: Values ── */}
+          {/* CARD 4: Values */}
           <div className="md:col-span-4 reveal" style={{ transitionDelay: "0.1s" }}>
             <div className="glow-card rounded-3xl p-8 h-full min-h-[220px] flex flex-col justify-between">
               <div className="chapter-marker mb-5">
@@ -136,7 +150,7 @@ const About = () => {
             </div>
           </div>
 
-          {/* ── CARD 5: Mission ── */}
+          {/* CARD 5: Mission */}
           <div className="md:col-span-4 reveal" style={{ transitionDelay: "0.2s" }}>
             <div className="glow-card rounded-3xl p-8 h-full min-h-[220px] flex flex-col justify-between relative overflow-hidden">
               <div>
@@ -148,12 +162,11 @@ const About = () => {
                   To make world-class technology accessible to every business — from startups to enterprises — through innovative, reliable, and affordable digital solutions.
                 </p>
               </div>
-              {/* Large ghost text */}
               <p className="text-black/[0.04] font-bold text-6xl leading-none mt-4 select-none">MISSION</p>
             </div>
           </div>
 
-          {/* ── CARD 6: Social links ── */}
+          {/* CARD 6: Social links */}
           <div className="md:col-span-12 reveal" style={{ transitionDelay: "0.15s" }}>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {bentoSocialLinks.map((item, i) => (
