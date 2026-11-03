@@ -7,9 +7,9 @@ import Loader from "./components/Loader";
 
 // Eagerly load above-the-fold
 import Hero from "./sections/Hero";
+import About from "./sections/About";
 
 // Lazy load everything below the fold
-const About         = lazy(() => import("./sections/About"));
 const Stats         = lazy(() => import("./sections/Stats"));
 const StoryTimeline = lazy(() => import("./sections/StoryTimeline"));
 const Founders      = lazy(() => import("./sections/Founders"));
@@ -54,8 +54,8 @@ const MainContent = () => {
         <StoryProgress />
       </Suspense>
       <Hero />
+      <Sep /><About />
       <Suspense fallback={null}>
-        <Sep /><About />
         <Sep /><Stats />
         <StoryTimeline />
         <Sep /><Founders />
