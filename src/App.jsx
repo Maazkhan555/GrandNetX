@@ -1,15 +1,30 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import NotFound from "./components/NotFound";
-import StoryProgress from "./components/StoryProgress";
-import StoryTimeline from "./sections/StoryTimeline";
 import AvailabilityBanner from "./components/AvailabilityBanner";
-import Pricing from "./sections/Pricing";
-import {
-  About, Contact, FAQ, Footer, Founders, Hero, Loader,
-  NavBar, Process, Services, Sidebar, Stats, TechStack,
-  Testimonials, Projects, WhyUs,
-} from "./sections";
+import NavBar from "./components/NavBar";
+import Loader from "./components/Loader";
+
+// Eagerly load above-the-fold
+import Hero from "./sections/Hero";
+
+// Lazy load everything below the fold
+const About         = lazy(() => import("./sections/About"));
+const Stats         = lazy(() => import("./sections/Stats"));
+const StoryTimeline = lazy(() => import("./sections/StoryTimeline"));
+const Founders      = lazy(() => import("./sections/Founders"));
+const Services      = lazy(() => import("./sections/Services"));
+const WhyUs         = lazy(() => import("./sections/WhyUs"));
+const Process       = lazy(() => import("./sections/Process"));
+const TechStack     = lazy(() => import("./sections/TechStack"));
+const Projects      = lazy(() => import("./sections/Projects"));
+const Pricing       = lazy(() => import("./sections/Pricing"));
+const Testimonials  = lazy(() => import("./sections/Testimonials"));
+const FAQ           = lazy(() => import("./sections/FAQ"));
+const Contact       = lazy(() => import("./sections/Contact"));
+const Footer        = lazy(() => import("./components/Footer"));
+const Sidebar       = lazy(() => import("./components/SideBar"));
+const StoryProgress = lazy(() => import("./components/StoryProgress"));
 
 const Sep = () => <div className="section-sep" />;
 
@@ -33,36 +48,29 @@ const MainContent = () => {
         <AvailabilityBanner />
       </div>
       <NavBar />
-      <Sidebar />
-      <Loader />
-      <StoryProgress />
+      <Suspense fallback={null}>
+        <Sidebar />
+        <Loader />
+        <StoryProgress />
+      </Suspense>
       <Hero />
-      <Sep />
-      <About />
-      <Sep />
-      <Stats />
-      <StoryTimeline />
-      <Sep />
-      <Founders />
-      <Sep />
-      <Services />
-      <Sep />
-      <WhyUs />
-      <Sep />
-      <Process />
-      <Sep />
-      <TechStack />
-      <Sep />
-      <Projects />
-      <Sep />
-      <Pricing />
-      <Sep />
-      <Testimonials />
-      <Sep />
-      <FAQ />
-      <Sep />
-      <Contact />
-      <Footer />
+      <Suspense fallback={null}>
+        <Sep /><About />
+        <Sep /><Stats />
+        <StoryTimeline />
+        <Sep /><Founders />
+        <Sep /><Services />
+        <Sep /><WhyUs />
+        <Sep /><Process />
+        <Sep /><TechStack />
+        <Sep /><Projects />
+        <Sep /><Pricing />
+        <Sep /><Testimonials />
+        <Sep /><FAQ />
+        <Sep /><Contact />
+        <Footer />
+      </Suspense>
+
       {/* Floating WhatsApp */}
       <a
         href="https://wa.me/923103581426"
@@ -93,7 +101,6 @@ const App = () => {
         document.querySelectorAll(sel).forEach((el) => io.observe(el))
       );
     observe();
-    // Re-observe any elements added dynamically (e.g. service card expand)
     const mo = new MutationObserver(observe);
     mo.observe(document.body, { childList: true, subtree: true });
     return () => { io.disconnect(); mo.disconnect(); };
@@ -101,7 +108,7 @@ const App = () => {
 
   return (
     <Router>
-      <div className="bg-[#fafafa] dark:bg-[#0a0a0a]">
+      <div className="bg-[#fafafa]">
         <Routes>
           <Route path="/" element={<MainContent />} />
           <Route path="*" element={<NotFound />} />
