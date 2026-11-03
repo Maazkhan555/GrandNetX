@@ -22,8 +22,7 @@ const ServiceCard = ({ service, index }) => {
   const [open, setOpen] = useState(false);
   return (
     <div
-      className={`story-card rounded-2xl p-5 cursor-pointer reveal ${open ? "shadow-lg" : ""}`}
-      style={{ transitionDelay: `${(index % 6) * 0.05}s` }}
+      className={`story-card rounded-2xl p-5 cursor-pointer ${open ? "shadow-lg" : ""}`}
       onClick={() => setOpen((v) => !v)}
     >
       <div className="flex items-center justify-between gap-4">

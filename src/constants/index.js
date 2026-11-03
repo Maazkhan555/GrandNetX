@@ -111,17 +111,17 @@ const servicesList = [
 const bentoSocialLinks = [
   {
     name: "Facebook",
-    href: "",
+    href: "https://www.facebook.com/grandnetxofficial/",
     icon: "/images/fb.svg",
   },
   {
     name: "Instagram",
-    href: "",
+    href: "https://www.instagram.com/grandnetxofficial/",
     icon: "/images/insta.svg",
   },
   {
     name: "LinkedIn",
-    href: "",
+    href: "https://www.linkedin.com/in/maaz-khan-378453320/",
     icon: "/images/linkedin.svg",
   },
   {
@@ -235,17 +235,17 @@ const statsList = [
 const footerIconsList = [
   {
     name: "Facebook",
-    href: "",
+    href: "https://www.facebook.com/grandnetxofficial/",
     icon: "/images/b-fb.svg",
   },
   {
     name: "Instagram",
-    href: "",
+    href: "https://www.instagram.com/grandnetxofficial/",
     icon: "/images/b-insta.svg",
   },
   {
     name: "LinkedIn",
-    href: "",
+    href: "https://www.linkedin.com/in/maaz-khan-378453320/",
     icon: "/images/b-linked.svg",
   },
   {
