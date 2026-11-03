@@ -4,12 +4,7 @@ import { navItems } from "../constants";
 const NavBar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [activeChapter, setActiveChapter] = useState("Opening");
-  const chapterMap = {
-    home: "Opening", about: "Origin", founders: "Visionaries",
-    services: "Capabilities", "why-us": "Difference", process: "Method",
-    projects: "Work", testimonials: "Impact", contact: "Connect",
-  };
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -21,70 +16,106 @@ const NavBar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close menu on resize to desktop
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => {
-        if (e.isIntersecting && chapterMap[e.target.id]) setActiveChapter(chapterMap[e.target.id]);
-      }),
-      { threshold: 0.4 }
-    );
-    Object.keys(chapterMap).forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
+    const onResize = () => { if (window.innerWidth >= 768) setMenuOpen(false); };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
+
+  const handleNavClick = () => setMenuOpen(false);
 
   return (
     <>
       {/* Scroll progress */}
       <div id="scroll-progress" style={{ width: `${progress}%` }} />
 
-      <div className={`w-full flex-center fixed z-50 left-0 transition-all duration-500 ${
-        scrolled
-          ? "bg-[#fafafa]/95 dark:bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-black/5 dark:border-white/5 py-3 shadow-[0_1px_0_rgba(0,0,0,0.04)]"
-          : "py-6 bg-transparent"
-      }`}
+      <nav
+        className={`w-full fixed z-50 left-0 transition-all duration-500 ${
+          scrolled
+            ? "bg-[#fafafa]/95 backdrop-blur-xl border-b border-black/5 py-3 shadow-[0_1px_0_rgba(0,0,0,0.04)]"
+            : "py-5 bg-transparent"
+        }`}
         style={{ top: "var(--banner-height, 0px)" }}
       >
-        <div className="container md:px-0 px-5 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-5 md:px-10 flex items-center justify-between">
+
           {/* Logo */}
-          <a href="#home" className="flex items-center gap-3">
-            <img src="/images/logo.png" alt="logo" className="md:size-9 size-8 object-cover" />
-            <div className="flex flex-col">
-              <span className="font-bold md:text-base text-sm tracking-wider text-black dark:text-white leading-none">GRANDNETX</span>
-              {scrolled && (
-                <span className="text-black/25 dark:text-white/25 text-[9px] tracking-[0.2em] uppercase leading-none mt-0.5">
-                  {activeChapter}
-                </span>
-              )}
-            </div>
+          <a href="#home" className="flex items-center gap-2.5" onClick={handleNavClick}>
+            <img src="/images/logo.png" alt="GrandNetX logo" className="size-8 object-contain" />
+            <span className="font-bold text-sm tracking-wider text-black leading-none">GRANDNETX</span>
           </a>
 
-          {/* Nav links */}
-          <div className="md:flex items-center gap-6 hidden">
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-6">
             {navItems.map((item, i) => (
-              <a key={i} href={item.href}
-                className="text-black/35 dark:text-white/35 hover:text-black dark:hover:text-white text-sm font-medium transition-colors duration-200 relative group">
+              <a
+                key={i}
+                href={item.href}
+                className="text-black/40 hover:text-black text-sm font-medium transition-colors duration-200 relative group"
+              >
                 {item.name}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-black dark:bg-white group-hover:w-full transition-all duration-300" />
+                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-black group-hover:w-full transition-all duration-300" />
               </a>
             ))}
-
-            <a href="#contact" className="btn-primary text-sm py-2.5 px-6">
+            <a href="#contact" className="btn-primary text-sm py-2 px-5">
               Get a Quote
             </a>
           </div>
 
-          <div className="md:hidden flex items-center gap-3" />
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5 rounded-lg border border-black/10 bg-white/80 backdrop-blur-sm"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label="Toggle menu"
+          >
+            <span className={`block w-5 h-px bg-black transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-[3.5px]" : ""}`} />
+            <span className={`block w-5 h-px bg-black transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`block w-5 h-px bg-black transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-[3.5px]" : ""}`} />
+          </button>
         </div>
 
         {/* Progress bar */}
         {scrolled && (
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-black/4 dark:bg-white/4">
-            <div className="h-full bg-black/20 dark:bg-white/20 transition-all duration-100" style={{ width: `${progress}%` }} />
+          <div className="absolute bottom-0 left-0 right-0 h-px bg-black/4">
+            <div className="h-full bg-black/20 transition-all duration-100" style={{ width: `${progress}%` }} />
           </div>
         )}
+      </nav>
+
+      {/* Mobile menu drawer */}
+      <div
+        className={`fixed inset-0 z-40 md:hidden transition-all duration-300 ${menuOpen ? "pointer-events-auto" : "pointer-events-none"}`}
+      >
+        {/* Backdrop */}
+        <div
+          className={`absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? "opacity-100" : "opacity-0"}`}
+          onClick={() => setMenuOpen(false)}
+        />
+
+        {/* Drawer */}
+        <div
+          className={`absolute top-0 right-0 h-full w-72 bg-white shadow-2xl transition-transform duration-300 ease-out flex flex-col ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
+          style={{ paddingTop: "calc(var(--banner-height, 0px) + 72px)" }}
+        >
+          <div className="flex flex-col px-6 py-4 gap-1">
+            {navItems.map((item, i) => (
+              <a
+                key={i}
+                href={item.href}
+                onClick={handleNavClick}
+                className="text-black/60 hover:text-black text-base font-medium py-3 border-b border-black/5 transition-colors duration-200 last:border-0"
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
+          <div className="px-6 mt-4">
+            <a href="#contact" onClick={handleNavClick} className="btn-primary w-full justify-center text-sm py-3">
+              Get a Free Quote
+            </a>
+          </div>
+        </div>
       </div>
     </>
   );
