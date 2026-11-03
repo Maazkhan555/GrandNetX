@@ -34,7 +34,7 @@ const Model3D = () => {
     <div ref={containerRef} className="canvas-container">
       <Canvas
         frameloop="always"
-        camera={{ position: [0, 0, 10], fov: 40 }}
+        camera={{ position: [0, 2, 12], fov: 35 }}
         gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
         style={{ background: "#0a0a0a" }}
       >
@@ -51,7 +51,7 @@ const Model3D = () => {
           maxPolarAngle={Math.PI / 1.8}
         />
         <Suspense fallback={null}>
-          <Alien scale={3} position={[0, -5, 0]} rotation={[0, -0.5, 0]} />
+          <Alien scale={1.8} position={[0, -2.8, 0]} rotation={[0, -0.5, 0]} />
         </Suspense>
       </Canvas>
       <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none">
