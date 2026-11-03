@@ -21,11 +21,11 @@ const values = [
 
 const Model3D = () => {
   return (
-    <div className="canvas-container flex items-center justify-center" style={{ background: "transparent" }}>
+    <div className="canvas-container">
       <Canvas
         camera={{ position: [0, 0.5, 5], fov: 45 }}
-        gl={{ antialias: true, alpha: true }}
-        style={{ background: "transparent" }}
+        gl={{ antialias: true, alpha: false }}
+        style={{ background: "#f0f0f0" }}
       >
         <ambientLight intensity={3} />
         <directionalLight position={[5, 5, 5]} intensity={4} />
