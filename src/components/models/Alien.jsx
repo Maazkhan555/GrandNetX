@@ -21,8 +21,8 @@ export function Alien(props) {
   const { actions } = useAnimations(animations, group);
 
   useEffect(() => {
-    actions["Armature|ArmatureAction"].play();
-  }, []);
+    actions["Armature|ArmatureAction"]?.play();
+  }, [actions]);
 
   return (
     <group ref={group} {...props} dispose={null}>
